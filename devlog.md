@@ -61,3 +61,4 @@ the list of element objects should be rendered into a html static page. This sho
 
 How do we detect nested lists?
 
+this could be solved by counting the identation with lists. Or/and lists could be seen as an inline item of text

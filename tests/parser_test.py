@@ -38,9 +38,14 @@ def test_parse_paragraph():
 
         paragraph_1 = Paragraph.parse(context)
         assert paragraph_1.text == "a one liner of a paragraph"
-        assert context.current_index == 3
+        assert context.current_index == 4
 
         context.current_index = 6
         paragraph_2 = Paragraph.parse(context)
         assert paragraph_2.text == "NOW IS YOUR CHANGE TO BE A BIG SHOT\nBE A BIG SHOT\nB B B B B BE A BIG SHOT"
-        assert context.current_index == 8
+        assert context.current_index == 9
+
+def test_parser():
+    parser = Parser("tests/test_heading.md")
+    parser.parse()
+    assert len(parser.document_list) == 3

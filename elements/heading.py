@@ -17,4 +17,4 @@ class Heading(Element):
         return Heading(text, level)
 
     def render_html(self):
-        pass
+        return f"<h{self.level}>{self.text}</h{self.level}>"

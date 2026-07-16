@@ -12,9 +12,9 @@ class Paragraph(Element):
             context.current_index += 1
             line = context.get_current_line()
             text += line
-
+        context.current_index += 1
         text = text.strip()
         return Paragraph(text)
 
     def render_html(self):
-        pass
+        return f"<p>{self.text}</p>"

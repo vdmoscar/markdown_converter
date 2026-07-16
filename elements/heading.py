@@ -7,13 +7,14 @@ class Heading(Element):
         self.level = level
 
     @staticmethod
-    def parse(index, file):
-        line = file[index]
+    def parse(context):
+        line = context.get_current_line()
         level = 0
         while line[level] == '#':
             level += 1
         text = line[level + 1:].strip()
-        return index + 1, Heading(text, level)
+        context.current_index += 1
+        return Heading(text, level)
 
     def render_html(self):
         pass

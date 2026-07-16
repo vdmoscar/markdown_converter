@@ -31,10 +31,16 @@ def test_parse_heading():
         assert heading_2.text == "second test but it has 3 levels huh"
         assert context.current_index == 9
 
-# def test_parse_paragraph():
-#     with open("tests/test_paragraph", "r") as file:
-#         test  = file.readlines()
-#         index1, paragraph_1 = Paragraph.parse(2, test)
-#         index2, paragraph_2 = Paragraph.parse(6, test)
-#         assert paragraph_1.text == "a one liner of a paragraph"
-#         assert index1 == 3
+def test_parse_paragraph():
+    with open("tests/test_paragraph.md", "r") as file:
+        test_lines  = file.readlines()
+        context = ParseContext(test_lines, ELEMENT_LIST, 2)
+
+        paragraph_1 = Paragraph.parse(context)
+        assert paragraph_1.text == "a one liner of a paragraph"
+        assert context.current_index == 3
+
+        context.current_index = 6
+        paragraph_2 = Paragraph.parse(context)
+        assert paragraph_2.text == "NOW IS YOUR CHANGE TO BE A BIG SHOT\nBE A BIG SHOT\nB B B B B BE A BIG SHOT"
+        assert context.current_index == 8

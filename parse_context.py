@@ -15,13 +15,24 @@ class ParseContext:
         return Paragraph
 
     def get_next_line(self):
-        return self.lines[self.current_index + 1]
+        if self.has_next_line():
+            return self.lines[self.current_index + 1]
+        return None
 
     def get_current_line(self):
         return self.lines[self.current_index]
 
     def identify_next_line(self):
-        return self.identify_line(self.get_next_line())
+        line = self.has_next_line()
+
+        if line:
+            return self.identify_line(self.get_next_line())
+
+        return None
+
 
     def identify_current_line(self):
         return self.identify_line(self.get_current_line())
+
+    def has_next_line(self):
+        return self.current_index + 1 < len(self.lines)

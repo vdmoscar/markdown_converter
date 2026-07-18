@@ -6,5 +6,5 @@ output_file = "test.html"
 
 parser = Parser(input_file)
 parser.parse()
-renderer = Renderer(parser.document_list, output_file)
-renderer.render()
+renderer = Renderer(parser.document_list)
+print(renderer.render())

@@ -16,9 +16,3 @@ class Parser:
                 element = context.identify_current_line()
                 self.document_list.append(element.parse(context))
             return self.document_list
-
-
-
-parser = Parser("tests/test_heading.md")
-parser.parse()
-print(parser.document_list)

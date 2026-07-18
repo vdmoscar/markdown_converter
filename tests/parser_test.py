@@ -53,6 +53,9 @@ def test_parse_image():
 
         assert context.identify_current_line() == Image
 
+        test_image = Image.parse(context)
+        assert test_image.url == "https://test.com"
+        assert test_image.text == "it works"
 
 
 def test_parser():

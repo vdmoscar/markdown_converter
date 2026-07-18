@@ -1,6 +1,7 @@
 import pytest
 from elements.heading import Heading
 from elements.paragraph import Paragraph
+from elements.image import Image
 from render import Renderer
 
 
@@ -15,3 +16,7 @@ def test_render_heading():
 def test_render_paragraph():
     renderer = Renderer([Paragraph("test")])
     assert renderer.render() == "<p>test</p>\n"
+
+def test_render_image():
+    renderer = Renderer([Image("test", "https://test.com")])
+    assert renderer.render() == "<img alt='test' src='https://test.com'>\n"

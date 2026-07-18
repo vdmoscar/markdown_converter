@@ -18,7 +18,7 @@ class Image(Element):
         return Image(text, url)
     
     def render_html(self):
-        return f"<img src='{self.url}' alt='{self.text}'>\n"
+        return f"<img alt='{self.text}' src='{self.url}'>"
 
 
 

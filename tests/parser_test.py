@@ -1,10 +1,11 @@
 import pytest
 from elements.heading import Heading
 from elements.paragraph import Paragraph
+from elements.image import Image
 from parser import Parser
 from parse_context import ParseContext
 
-ELEMENT_LIST = [Heading]
+ELEMENT_LIST = [Heading, Image]
 
 def test_parseContext_identify_heading():
     parse_context = ParseContext("empty", ELEMENT_LIST, 1)
@@ -45,7 +46,18 @@ def test_parse_paragraph():
         assert paragraph_2.text == "NOW IS YOUR CHANGE TO BE A BIG SHOT\nBE A BIG SHOT\nB B B B B BE A BIG SHOT"
         assert context.current_index == 9
 
+def test_parse_image():
+    with open("tests/test_image.md", "r") as file:
+        test_lines = file.readlines()
+        context = ParseContext(test_lines, ELEMENT_LIST, 1)
+
+        assert context.identify_current_line() == Image
+
+
+
 def test_parser():
-    parser = Parser("tests/test_heading.md")
-    parser.parse()
-    assert len(parser.document_list) == 3
+    with open("tests/test_heading.md", "r") as file:
+        test = file.readlines()
+        parser = Parser(test)
+        parser.parse()
+        assert len(parser.document_list) == 3

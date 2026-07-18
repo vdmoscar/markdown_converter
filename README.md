@@ -10,12 +10,13 @@ Currently it converts a basic subset of Markdown into HTML:
 
 - Headings
 - Paragraphs
+- Images
 
 ## Next on the list
 
 I am filled with determination to add these features:
 
-- Image conversion
+
 - Code blocks
 - Lists
 - More Markdown features
@@ -39,12 +40,15 @@ python main.py markdown_input_file html_output_file
 # Hello
 
 This is a paragraph.
+
+![alt text](https://link_to_image.com)
 ```
 
 ### output
 ```html
 <h1>Hello</h1>
 <p>This is a paragraph.</p>
+<img alt="alt text" src="https://link_to_image.com">
 ```
 
 Stay determined!

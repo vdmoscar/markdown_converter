@@ -1,9 +1,10 @@
 from elements.heading import Heading
-from elements.paragraph import Paragraph
+from elements.image import Image
 from parse_context import ParseContext
-import re
+
+
 class Parser:
-    element_list = [Heading]
+    element_list = [Heading, Image]
     def __init__(self, lines):
         self.lines = lines
         self.document_list = []

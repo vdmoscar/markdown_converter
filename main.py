@@ -1,10 +1,9 @@
-from parser import Parser
-from render import Renderer
+from converter import convert_to_html
+from cli import cli_parse
 
-input_file = "tests/test_heading.md"
-output_file = "test.html"
-
-parser = Parser(input_file)
-parser.parse()
-renderer = Renderer(parser.document_list)
-print(renderer.render())
+if __name__ == "__main__":
+    args = cli_parse()
+    with open(args.input_file, "r") as file:
+        markdown = file.readlines()
+        with open(args.output_file, "w") as file:
+            file.writelines(convert_to_html(markdown))

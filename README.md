@@ -22,11 +22,15 @@ I am filled with determination to add these features:
 
 ## Project structure
 
-The converter currently follows this pipeline:
+The converter internally follows this pipeline:
 
 Markdown file → Parser → Elements → HTML renderer
 
-
+## Usage
+The converter can be used through the CLI with the following command:
+```bash
+python main.py markdown_input_file html_output_file
+```
 ## Example
 
 ### input

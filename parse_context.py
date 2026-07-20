@@ -30,9 +30,30 @@ class ParseContext:
 
         return None
 
-
     def identify_current_line(self):
         return self.identify_line(self.get_current_line())
 
+    def get_line_level(self, line: str):
+        level = 0
+        if line.startswith("\t"):
+            for char in line:
+                if char != "\t":
+                    return level
+                level += 1
+        
+        if line.startswith("    "):
+            level += 1 + self.get_line_level(line[4:])
+            
+        return level
+    
+    def get_current_line_level(self):
+        return self.get_line_level(self.get_current_line())
+    
+    def get_next_line_level(self):
+        line = self.get_next_line()
+        if line:
+            return self.get_line_level(line)
+        return None
+    
     def has_next_line(self):
         return self.current_index + 1 < len(self.lines)

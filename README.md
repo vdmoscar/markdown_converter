@@ -11,6 +11,7 @@ Currently it converts a basic subset of Markdown into HTML:
 - Headings
 - Paragraphs
 - Images
+- Unordered Lists
 
 ## Next on the list
 
@@ -18,7 +19,7 @@ I am filled with determination to add these features:
 
 
 - Code blocks
-- Lists
+- Ordered Lists
 - More Markdown features
 
 ## Project structure
@@ -42,6 +43,9 @@ python main.py markdown_input_file html_output_file
 This is a paragraph.
 
 ![alt text](https://link_to_image.com)
+
+- test1
+- test2
 ```
 
 ### output
@@ -49,6 +53,10 @@ This is a paragraph.
 <h1>Hello</h1>
 <p>This is a paragraph.</p>
 <img alt="alt text" src="https://link_to_image.com">
+<ul>
+<li>test1</li>
+<li>test2</li>  
+</ul>
 ```
 
 Stay determined!

@@ -2,6 +2,7 @@ import pytest
 from elements.heading import Heading
 from elements.paragraph import Paragraph
 from elements.image import Image
+from elements.unordered_list import UnorderedList
 from render import Renderer
 
 
@@ -20,3 +21,7 @@ def test_render_paragraph():
 def test_render_image():
     renderer = Renderer([Image("test", "https://test.com")])
     assert renderer.render() == "<img alt='test' src='https://test.com'>\n"
+
+def test_render_unordered_list():
+    renderer = Renderer([UnorderedList(["test1", "test2"])])
+    assert renderer.render() == "<ul>\n<li>test1</li>\n<li>test2</li>\n</ul>\n"

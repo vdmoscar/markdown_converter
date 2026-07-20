@@ -1,10 +1,11 @@
 from elements.heading import Heading
 from elements.image import Image
+from elements.unordered_list import UnorderedList
 from parse_context import ParseContext
 
 
 class Parser:
-    element_list = [Heading, Image]
+    element_list = [Heading, Image, UnorderedList]
     def __init__(self, lines):
         self.lines = lines
         self.document_list = []

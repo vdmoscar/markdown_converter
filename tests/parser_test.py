@@ -2,10 +2,11 @@ import pytest
 from elements.heading import Heading
 from elements.paragraph import Paragraph
 from elements.image import Image
+from elements.unordered_list import UnorderedList
 from parser import Parser
 from parse_context import ParseContext
 
-ELEMENT_LIST = [Heading, Image]
+ELEMENT_LIST = [Heading, Image, UnorderedList]
 
 def test_parseContext_identify_heading():
     parse_context = ParseContext("empty", ELEMENT_LIST, 1)
@@ -57,6 +58,15 @@ def test_parse_image():
         assert test_image.url == "https://test.com"
         assert test_image.text == "it works"
 
+def test_parse_unorderd_list():
+    with open("tests/test_ul.md", "r") as file:
+        test_lines = file.readlines()
+        context = ParseContext(test_lines, ELEMENT_LIST, 0)
+
+        assert context.identify_current_line() == UnorderedList
+        test_list = UnorderedList.parse(context)
+        assert len(test_list.list_items) == 2
+        assert test_list.list_items[0] == "test"
 
 def test_parser():
     with open("tests/test_heading.md", "r") as file:

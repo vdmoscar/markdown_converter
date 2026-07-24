@@ -7,8 +7,10 @@ class ParseContext:
         self.lines = lines
         self.element_list = element_list
         self.current_index = current_index
+        self.level = 0
 
     def identify_line(self, line):
+        line = self.remove_indentation(line)
         for element in self.element_list:
             if element.regex and re.match(element.regex, line):
                 return element
@@ -57,3 +59,8 @@ class ParseContext:
     
     def has_next_line(self):
         return self.current_index + 1 < len(self.lines)
+
+    def remove_indentation(self, line: str):
+        while line.startswith((" ", "\t")):
+            line = line[1:]
+        return line

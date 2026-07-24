@@ -66,9 +66,9 @@ def test_parse_unorderd_list():
         assert context.identify_current_line() == UnorderedList
         test_list = UnorderedList.parse(context)
         assert len(test_list.list_items) == 2
-        assert test_list.list_items[0] == "test"
+        assert test_list.list_items[0].item == "test"
 
-def test_parse_nested_list():
+def test_parse_context_line_levels():
     with open("tests/test_ul.md", "r") as file:
         test_lines = file.readlines()
         context = ParseContext(test_lines, ELEMENT_LIST, 4)
@@ -76,6 +76,14 @@ def test_parse_nested_list():
         assert context.get_line_level("\ttest the rage") == 1
         assert context.get_current_line_level() == 1
         assert context.get_next_line_level() == 2
+
+def test_parse_nested_list():
+    with open("tests/test_ul.md", "r") as file:
+        test_lines = file.readlines()
+        context = ParseContext(test_lines, ELEMENT_LIST, 4)
+
+        assert context.identify_current_line() == UnorderedList
+        assert context.identify_next_line() == UnorderedList
 
 def test_parser():
     with open("tests/test_heading.md", "r") as file:

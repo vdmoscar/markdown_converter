@@ -1,4 +1,5 @@
 from element import Element
+from elements.list_item import ListItem
 
 class UnorderedList(Element):
     regex = r"-\s.*"
@@ -8,21 +9,16 @@ class UnorderedList(Element):
     
     @staticmethod
     def parse(context):
-        list_items = [UnorderedList.strip_markdown_list_item(context.get_current_line())]
+        list_items = [ListItem.parse(context)]
         while context.identify_next_line() == UnorderedList:
             context.current_index += 1
-            list_items.append(UnorderedList.strip_markdown_list_item(context.get_current_line()))
-        context.current_index += 1
+            list_items.append(ListItem.parse(context))
         return UnorderedList(list_items)
-    
-    @staticmethod
-    def strip_markdown_list_item(item):
-        return item[2:].strip()
     
     def render_html(self):
         html = "<ul>\n"
         for item in self.list_items:
-            html += f"<li>{item}</li>\n"
+            html += f"{item.render_html()}\n"
         html += "</ul>"
         return html
     

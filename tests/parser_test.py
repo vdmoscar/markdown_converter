@@ -64,9 +64,10 @@ def test_parse_unorderd_list():
         context = ParseContext(test_lines, ELEMENT_LIST, 0)
 
         assert context.identify_current_line() == UnorderedList
+
         test_list = UnorderedList.parse(context)
         assert len(test_list.list_items) == 2
-        assert test_list.list_items[0].item == "test"
+        assert test_list.list_items[0].item_children[0] == "test"
 
 def test_parse_context_line_levels():
     with open("tests/test_ul.md", "r") as file:

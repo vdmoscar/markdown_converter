@@ -24,6 +24,9 @@ class ParseContext:
     def get_current_line(self):
         return self.lines[self.current_index]
 
+    def get_current_line_ident_free(self):
+        return self.remove_indentation(self.get_current_line())
+
     def identify_next_line(self):
         line = self.has_next_line()
 
@@ -42,21 +45,21 @@ class ParseContext:
                 if char != "\t":
                     return level
                 level += 1
-        
+
         if line.startswith("    "):
             level += 1 + self.get_line_level(line[4:])
-            
+
         return level
-    
+
     def get_current_line_level(self):
         return self.get_line_level(self.get_current_line())
-    
+
     def get_next_line_level(self):
         line = self.get_next_line()
         if line:
             return self.get_line_level(line)
         return None
-    
+
     def has_next_line(self):
         return self.current_index + 1 < len(self.lines)
 

@@ -8,7 +8,7 @@ class Heading(Element):
 
     @staticmethod
     def parse(context):
-        line = context.get_current_line()
+        line = context.get_current_line_indent_free()
         level = 0
         while line[level] == '#':
             level += 1

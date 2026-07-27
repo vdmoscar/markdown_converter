@@ -6,7 +6,7 @@ class ListItem(Element):
 
     @staticmethod
     def parse(context):
-        item = ListItem.strip_markdown_list_item(context.get_current_line_ident_free())
+        item = ListItem.strip_markdown_list_item(context.get_current_line_indent_free())
         context.current_index += 1
         return ListItem(item)
 

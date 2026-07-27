@@ -24,7 +24,7 @@ class ParseContext:
     def get_current_line(self):
         return self.lines[self.current_index]
 
-    def get_current_line_ident_free(self):
+    def get_current_line_indent_free(self):
         return self.remove_indentation(self.get_current_line())
 
     def identify_next_line(self):

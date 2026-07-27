@@ -18,7 +18,11 @@ class UnorderedList(Element):
                 context.level = old_level
 
             elif UnorderedList.current_line_is_a_sibling(context):
-                list_items.append(ListItem.parse(context))
+                element = context.identify_current_line()
+                if element == UnorderedList:
+                    list_items.append(ListItem.parse(context))
+                else:
+                    list_items[-1].add_child(context)
 
             else:
                 return UnorderedList(list_items)

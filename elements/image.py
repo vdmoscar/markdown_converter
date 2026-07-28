@@ -1,4 +1,5 @@
 from element import Element
+from text import Text
 import re
 
 class Image(Element):
@@ -15,10 +16,10 @@ class Image(Element):
         text = match.group(1)
         url = match.group(2)
         context.current_index += 1
-        return Image(text, url)
+        return Image(Text.parse(text), url)
 
     def render_html(self):
-        return f"<img alt='{self.text}' src='{self.url}'>"
+        return f"<img alt='{self.text.render_html()}' src='{self.url}'>"
 
 
 

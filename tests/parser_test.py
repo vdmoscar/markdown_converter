@@ -5,6 +5,7 @@ from elements.image import Image
 from elements.unordered_list import UnorderedList
 from parser import Parser
 from parse_context import ParseContext
+from text import Text
 
 ELEMENT_LIST = [Heading, Image, UnorderedList]
 
@@ -25,12 +26,12 @@ def test_parse_heading():
         context = ParseContext(test_lines, ELEMENT_LIST, 0)
         heading_1 = Heading.parse(context)
         assert heading_1.level == 1
-        assert heading_1.text == "test"
+        assert heading_1.text.text_items[0].content == "test"
         assert context.current_index == 1
         context.current_index = 8
         heading_2 = Heading.parse(context)
         assert heading_2.level == 3
-        assert heading_2.text == "second test but it has 3 levels huh"
+        assert heading_2.text.text_items[0].content == "second test but it has 3 levels huh"
         assert context.current_index == 9
 
 def test_parse_paragraph():
@@ -39,12 +40,12 @@ def test_parse_paragraph():
         context = ParseContext(test_lines, ELEMENT_LIST, 2)
 
         paragraph_1 = Paragraph.parse(context)
-        assert paragraph_1.text == "a one liner of a paragraph"
+        assert paragraph_1.text.text_items[0].content == "a one liner of a paragraph"
         assert context.current_index == 4
 
         context.current_index = 6
         paragraph_2 = Paragraph.parse(context)
-        assert paragraph_2.text == "NOW IS YOUR CHANGE TO BE A BIG SHOT\nBE A BIG SHOT\nB B B B B BE A BIG SHOT"
+        assert paragraph_2.text.text_items[0].content == "NOW IS YOUR CHANGE TO BE A BIG SHOT\nBE A BIG SHOT\nB B B B B BE A BIG SHOT"
         assert context.current_index == 9
 
 def test_parse_image():
@@ -56,7 +57,7 @@ def test_parse_image():
 
         test_image = Image.parse(context)
         assert test_image.url == "https://test.com"
-        assert test_image.text == "it works"
+        assert test_image.text.text_items[0].content == "it works"
 
 def test_parse_unordered_list():
     with open("tests/test_ul.md", "r") as file:
@@ -67,7 +68,7 @@ def test_parse_unordered_list():
 
         test_list = UnorderedList.parse(context)
         assert len(test_list.list_items) == 2
-        assert test_list.list_items[0].item_children[0] == "test"
+        assert type(test_list.list_items[0].item_children[0]) == Text
 
 def test_parse_context_line_levels():
     with open("tests/test_ul.md", "r") as file:
@@ -86,7 +87,7 @@ def test_parse_nested_list():
         test_list = UnorderedList.parse(context)
         assert len(test_list.list_items) == 2
         assert len(test_list.list_items[0].item_children) == 2
-        assert type(test_list.list_items[0].item_children[0]) == str
+        assert type(test_list.list_items[0].item_children[0]) == Text
         assert type(test_list.list_items[0].item_children[1]) == UnorderedList
 
 def test_paragraph_stops_at_empty_line():
@@ -98,7 +99,7 @@ def test_paragraph_stops_at_empty_line():
 
         context = ParseContext(test, ELEMENT_LIST, 1)
         correct_ending_p = Paragraph.parse(context)
-        assert correct_ending_p.text == "1\n2\n3"
+        assert correct_ending_p.text.text_items[0].content == "1\n2\n3"
 
 
 def test_parser():

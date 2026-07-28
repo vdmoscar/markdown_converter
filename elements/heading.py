@@ -1,4 +1,5 @@
 from element import Element
+from text import Text
 
 class Heading(Element):
     regex = r"^#{1,6}\s.*"
@@ -14,7 +15,7 @@ class Heading(Element):
             level += 1
         text = line[level + 1:].strip()
         context.current_index += 1
-        return Heading(text, level)
+        return Heading(Text.parse(text), level)
 
     def render_html(self):
-        return f"<h{self.level}>{self.text}</h{self.level}>"
+        return f"<h{self.level}>{self.text.render_html()}</h{self.level}>"

@@ -14,5 +14,8 @@ class Parser:
         context = ParseContext(self.lines, self.element_list)
         while context.current_index < len(context.lines):
             element = context.identify_current_line()
-            self.document_list.append(element.parse(context))
+            if element:
+                self.document_list.append(element.parse(context))
+            else:
+                context.current_index += 1
         return self.document_list

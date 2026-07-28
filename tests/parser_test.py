@@ -58,7 +58,7 @@ def test_parse_image():
         assert test_image.url == "https://test.com"
         assert test_image.text == "it works"
 
-def test_parse_unorderd_list():
+def test_parse_unordered_list():
     with open("tests/test_ul.md", "r") as file:
         test_lines = file.readlines()
         context = ParseContext(test_lines, ELEMENT_LIST, 0)
@@ -89,10 +89,21 @@ def test_parse_nested_list():
         assert type(test_list.list_items[0].item_children[0]) == str
         assert type(test_list.list_items[0].item_children[1]) == UnorderedList
 
+def test_paragraph_stops_at_empty_line():
+    with open("tests/test_heading.md", "r") as file:
+        test = file.readlines()
+        context = ParseContext(test, ELEMENT_LIST, 6)
+
+        assert context.identify_current_line() == None
+
+        context = ParseContext(test, ELEMENT_LIST, 1)
+        correct_ending_p = Paragraph.parse(context)
+        assert correct_ending_p.text == "1\n2\n3"
+
 
 def test_parser():
     with open("tests/test_heading.md", "r") as file:
         test = file.readlines()
         parser = Parser(test)
         parser.parse()
-        assert len(parser.document_list) == 3
+        assert len(parser.document_list) == 4

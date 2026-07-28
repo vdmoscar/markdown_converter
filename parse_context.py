@@ -11,6 +11,8 @@ class ParseContext:
 
     def identify_line(self, line):
         line = self.remove_indentation(line)
+        if self.is_empty_line():
+            return None
         for element in self.element_list:
             if element.regex and re.match(element.regex, line):
                 return element
@@ -67,3 +69,6 @@ class ParseContext:
         while line.startswith((" ", "\t")):
             line = line[1:]
         return line
+
+    def is_empty_line(self):
+        return not self.get_current_line().strip()

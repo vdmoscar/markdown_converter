@@ -11,7 +11,11 @@ Currently it converts a basic subset of Markdown into HTML:
 - Headings
 - Paragraphs
 - Images
-- Unordered Lists
+- Unordered Lists (works with nested lists)
+
+- Inline parsing:
+    - Italic
+    - Bold
 
 ## Next on the list
 
@@ -26,7 +30,7 @@ I am filled with determination to add these features:
 
 The converter internally follows this pipeline:
 
-Markdown file → Parser → Elements → HTML renderer
+Markdown file → Parser → Elements → Text Parser  → HTML renderer
 
 ## Usage
 The converter can be used through the CLI with the following command:
@@ -46,6 +50,10 @@ This is a paragraph.
 
 - test1
 - test2
+
+*italic*
+
+**bold**
 ```
 
 ### output
@@ -55,8 +63,10 @@ This is a paragraph.
 <img alt="alt text" src="https://link_to_image.com">
 <ul>
 <li>test1</li>
-<li>test2</li>  
+<li>test2</li>
 </ul>
+<p><em>Italic</em></p>
+<p><strong>Bold</strong></p>
 ```
 
 Stay determined!

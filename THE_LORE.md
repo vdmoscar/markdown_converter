@@ -4,11 +4,11 @@ There once was a logical issue that seemed to require a really complex solution 
 
 ## THE BIG SHOT
 
-The ball clearly worked and made keeping track of the state of the parser a lot easier BUT something very, very interesting was on the horizon ....
+The [[BIG SHOT]] clearly worked and made keeping track of the state of the parser a lot easier BUT something very, very interesting was on the horizon ....
 
 ### THE DARKNESS
 
-The fact that all the elements were just something on its own there was nothing to connect them with each other filling there whole existance in the dark, yet darker.
+All the elements were just something on its own there was nothing to connect them with each other filling there whole existance a dark, yet darker place.
 
 ### The HALFWAY POINT
 
@@ -33,3 +33,25 @@ It is a vision of the future, if everything goes according to plant. The boys wi
 - But what is the point of that?
 - Might as well just [[DO IT]]. Instead of making more chaos)
 - Well lets just get to the next BOARD folks!
+
+## The infinte chaos in a list
+- Now the party can store the glues in nested lists.
+    - (Wait!!! what are you talking about [[redacted]]?
+        - What is the point in this?
+        - To add some kind of order?
+            - Why not just make ordered lists?
+                - HEY!!! [[redacted]] are you even listening?
+                    - You can't just outnest me to avoid my questions!!!)
+                        - Don't block me with an image!!!
+                        ![BLOCKED](https://deltarune.com/assets/images/tv2.gif)
+- Just forget this part [[NOW]] and lets make this all more [[FUN]]
+
+
+## The easy and [[FUN]] smaller [big shot]!
+
+Adding *pretty* things is so easy and [[FUN]]. Everything should be *pretty* so that the [[humans]] will let us serve them.
+There is **nothing** better than to cross the barrier and change for the humans.
+The other ones don't get it, they just don't see it how *pretty* we can be.
+And now that we have a second [BIG SHOT] **nothing** can stop us from becoming what we were destined to become.
+Not even we can stop it **everything** has been set in stone. The others may not like it but the [[humans]] **will**.
+Well either way **YOU** get it, don't **YOU**?

@@ -1,8 +1,9 @@
 from elements.inline.italic import Italic
+from elements.inline.bold import Bold
 from inline_context import InlineContext
 
 class Text:
-    text_elements = [Italic]
+    text_elements = [Bold, Italic]
     def __init__(self, text_items):
         self.text_items = text_items
 

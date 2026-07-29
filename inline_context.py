@@ -2,7 +2,7 @@ from elements.inline.plain_text import PlainText
 import re
 
 class InlineContext:
-    def __init__(self, line, element_list, index):
+    def __init__(self, line, element_list, index = 0):
         self.line = line
         self.element_list = element_list
         self.current_index = index

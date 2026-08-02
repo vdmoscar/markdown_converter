@@ -1,9 +1,10 @@
 from elements.inline.italic import Italic
 from elements.inline.bold import Bold
+from elements.inline.strikethrough import Strikethrough
 from inline_context import InlineContext
 
 class Text:
-    text_elements = [Bold, Italic]
+    text_elements = [Bold, Italic, Strikethrough]
     def __init__(self, text_items):
         self.text_items = text_items
 

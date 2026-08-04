@@ -68,7 +68,7 @@ def test_parse_unordered_list():
 
         test_list = UnorderedList.parse(context)
         assert len(test_list.list_items) == 2
-        assert type(test_list.list_items[0].item_children[0]) == Text
+        assert isinstance(test_list.list_items[0].item_children[0], Text)
 
 def test_parse_context_line_levels():
     with open("tests/test_ul.md", "r") as file:
@@ -87,15 +87,15 @@ def test_parse_nested_list():
         test_list = UnorderedList.parse(context)
         assert len(test_list.list_items) == 2
         assert len(test_list.list_items[0].item_children) == 2
-        assert type(test_list.list_items[0].item_children[0]) == Text
-        assert type(test_list.list_items[0].item_children[1]) == UnorderedList
+        assert isinstance(test_list.list_items[0].item_children[0], Text)
+        assert isinstance(test_list.list_items[0].item_children[1], UnorderedList)
 
 def test_paragraph_stops_at_empty_line():
     with open("tests/test_heading.md", "r") as file:
         test = file.readlines()
         context = ParseContext(test, ELEMENT_LIST, 6)
 
-        assert context.identify_current_line() == None
+        assert context.identify_current_line() is None
 
         context = ParseContext(test, ELEMENT_LIST, 1)
         correct_ending_p = Paragraph.parse(context)

@@ -4,6 +4,7 @@ from elements.inline.plain_text import PlainText
 from elements.inline.italic import Italic
 from elements.inline.bold import Bold
 from elements.inline.strikethrough import Strikethrough
+from elements.inline.link import Link
 
 def test_render_inline_html():
     assert Text([Bold("This"),PlainText(" is sooo "), Italic("pretty"), PlainText("!")]).render_html() == "<strong>This</strong> is sooo <em>pretty</em>!"
@@ -16,3 +17,6 @@ def test_render_bold():
 
 def test_render_strikethrough():
     assert Strikethrough("test").render_html() == "<del>test</del>"
+
+def test_render_link():
+    assert Link("test", "test.com").render_html() == "<a href='test.com'>test</a>"

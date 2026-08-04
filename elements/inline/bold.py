@@ -11,7 +11,7 @@ class Bold(Element):
         line = inline_context.get_line_from_current_index()
         match_object = re.match(Bold.regex, line)
         content = match_object.group(1)
-        inline_context.current_index += len(match_object.group(1)) + 4
+        inline_context.current_index += match_object.end()
         return Bold(content)
 
     def render_html(self):

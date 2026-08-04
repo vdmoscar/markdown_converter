@@ -1,7 +1,8 @@
 from element import Element
 
+
 class PlainText(Element):
-    def __init__(self,content):
+    def __init__(self, content):
         self.content = content
 
     def parse(inline_context):

@@ -2,13 +2,13 @@ from element import Element
 from text import Text
 import re
 
+
 class Image(Element):
     regex = r"!\[([^\]]*)\]\(([^)]*)\)"
 
     def __init__(self, text, url):
         self.text = text
         self.url = url
-
 
     @staticmethod
     def parse(context):
@@ -20,9 +20,3 @@ class Image(Element):
 
     def render_html(self):
         return f"<img alt='{self.text.render_html()}' src='{self.url}'>"
-
-
-
-
-
-

@@ -1,8 +1,10 @@
 from element import Element
 import re
 
+
 class Link(Element):
     regex = r"\[([^\]]*)\]\(([^)]*)\)"
+
     def __init__(self, content, url):
         self.content = content
         self.url = url

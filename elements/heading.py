@@ -1,8 +1,10 @@
 from element import Element
 from text import Text
 
+
 class Heading(Element):
     regex = r"^#{1,6}\s.*"
+
     def __init__(self, text, level):
         self.text = text
         self.level = level

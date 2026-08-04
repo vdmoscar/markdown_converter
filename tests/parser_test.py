@@ -1,4 +1,3 @@
-import pytest
 from elements.heading import Heading
 from elements.paragraph import Paragraph
 from elements.image import Image
@@ -8,6 +7,7 @@ from parse_context import ParseContext
 from text import Text
 
 ELEMENT_LIST = [Heading, Image, UnorderedList]
+
 
 def test_parseContext_identify_heading():
     parse_context = ParseContext("empty", ELEMENT_LIST, 1)
@@ -19,6 +19,7 @@ def test_parseContext_identify_heading():
     assert parse_context.identify_line(test2) == Heading
     assert parse_context.identify_line(test3) == Paragraph
     assert parse_context.identify_line(test4) == Paragraph
+
 
 def test_parse_heading():
     with open("tests/test_heading.md", "r") as file:
@@ -34,9 +35,10 @@ def test_parse_heading():
         assert heading_2.text.text_items[0].content == "second test but it has 3 levels huh"
         assert context.current_index == 9
 
+
 def test_parse_paragraph():
     with open("tests/test_paragraph.md", "r") as file:
-        test_lines  = file.readlines()
+        test_lines = file.readlines()
         context = ParseContext(test_lines, ELEMENT_LIST, 2)
 
         paragraph_1 = Paragraph.parse(context)
@@ -45,8 +47,13 @@ def test_parse_paragraph():
 
         context.current_index = 6
         paragraph_2 = Paragraph.parse(context)
-        assert paragraph_2.text.text_items[0].content == "NOW IS YOUR CHANGE TO BE A BIG SHOT\nBE A BIG SHOT\nB B B B B BE A BIG SHOT"
+        assert paragraph_2.text.text_items[0].content == (
+            "NOW IS YOUR CHANGE TO BE A BIG SHOT\n"
+            "BE A BIG SHOT\n"
+            "B B B B B BE A BIG SHOT"
+        )
         assert context.current_index == 9
+
 
 def test_parse_image():
     with open("tests/test_image.md", "r") as file:
@@ -59,6 +66,7 @@ def test_parse_image():
         assert test_image.url == "https://test.com"
         assert test_image.text.text_items[0].content == "it works"
 
+
 def test_parse_unordered_list():
     with open("tests/test_ul.md", "r") as file:
         test_lines = file.readlines()
@@ -70,6 +78,7 @@ def test_parse_unordered_list():
         assert len(test_list.list_items) == 2
         assert isinstance(test_list.list_items[0].item_children[0], Text)
 
+
 def test_parse_context_line_levels():
     with open("tests/test_ul.md", "r") as file:
         test_lines = file.readlines()
@@ -78,6 +87,7 @@ def test_parse_context_line_levels():
         assert context.get_line_level("\ttest the rage") == 1
         assert context.get_current_line_level() == 1
         assert context.get_next_line_level() == 2
+
 
 def test_parse_nested_list():
     with open("tests/test_nested_list.md", "r") as file:
@@ -89,6 +99,7 @@ def test_parse_nested_list():
         assert len(test_list.list_items[0].item_children) == 2
         assert isinstance(test_list.list_items[0].item_children[0], Text)
         assert isinstance(test_list.list_items[0].item_children[1], UnorderedList)
+
 
 def test_paragraph_stops_at_empty_line():
     with open("tests/test_heading.md", "r") as file:

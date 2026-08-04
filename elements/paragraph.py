@@ -1,5 +1,6 @@
 from element import Element
-from  text import Text
+from text import Text
+
 
 class Paragraph(Element):
     def __init__(self, text: Text):

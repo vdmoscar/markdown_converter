@@ -1,8 +1,10 @@
 from element import Element
 import re
 
+
 class Strikethrough(Element):
     regex = r"^~~(.*?)~~"
+
     def __init__(self, content):
         self.content = content
 

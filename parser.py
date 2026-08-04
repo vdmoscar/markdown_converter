@@ -6,6 +6,7 @@ from parse_context import ParseContext
 
 class Parser:
     element_list = [Heading, Image, UnorderedList]
+
     def __init__(self, lines):
         self.lines = lines
         self.document_list = []

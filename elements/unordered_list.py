@@ -1,6 +1,7 @@
 from element import Element
 from elements.list_item import ListItem
 
+
 class UnorderedList(Element):
     regex = r"-\s.*"
 
@@ -31,7 +32,9 @@ class UnorderedList(Element):
 
     @staticmethod
     def current_line_is_a_sibling(context):
-        return (context.level > 0 and context.level == context.get_current_line_level()) or (context.level == 0 and context.identify_current_line() == UnorderedList)
+        same_level_as_parent = context.level > 0 and context.level == context.get_current_line_level()
+        is_root_level_list = context.level == 0 and context.identify_current_line() == UnorderedList
+        return same_level_as_parent or is_root_level_list
 
     @staticmethod
     def current_line_is_child(context):
@@ -43,5 +46,3 @@ class UnorderedList(Element):
             html += f"{item.render_html()}\n"
         html += "</ul>"
         return html
-
-

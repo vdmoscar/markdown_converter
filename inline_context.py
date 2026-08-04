@@ -1,8 +1,9 @@
 from elements.inline.plain_text import PlainText
 import re
 
+
 class InlineContext:
-    def __init__(self, line, element_list, index = 0):
+    def __init__(self, line, element_list, index=0):
         self.line = line
         self.element_list = element_list
         self.current_index = index
@@ -27,10 +28,8 @@ class InlineContext:
             return self.identify_inline_element(line)
         return None
 
-
     def get_first_char(self):
         try:
             return self.get_line_from_current_index()[0]
         except IndexError:
             return None
-

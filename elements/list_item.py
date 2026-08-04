@@ -1,5 +1,7 @@
 from element import Element
 from text import Text
+
+
 class ListItem(Element):
     def __init__(self, item):
         self.item_children = [item]
@@ -17,7 +19,7 @@ class ListItem(Element):
     def render_html(self):
         html = "<li>"
         for item in self.item_children:
-                html += item.render_html()
+            html += item.render_html()
         html += "</li>"
         return html
 

@@ -7,4 +7,3 @@ class Renderer:
         for element in self.document_list:
             html += f"{element.render_html()}\n"
         return html
-

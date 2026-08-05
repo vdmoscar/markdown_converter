@@ -34,7 +34,7 @@ def test_render_unordered_list():
 
 def test_render_code_block():
     renderer = Renderer([CodeBlock("print()", "python")])
-    assert renderer.render() == "<pre><code class = 'language-python'>print()</code></pre>\n"
+    assert renderer.render() == "<pre><code class='language-python'>print()</code></pre>\n"
 
     renderer_empty_language = Renderer([CodeBlock("print()", '')])
     assert renderer_empty_language.render() == "<pre><code>print()</code></pre>\n"

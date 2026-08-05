@@ -7,7 +7,8 @@ from elements.inline.link import Link
 
 
 def test_render_inline_html():
-    assert Text([Bold("This"),PlainText(" is sooo "), Italic("pretty"), PlainText("!")]).render_html() == "<strong>This</strong> is sooo <em>pretty</em>!"
+    test_text = Text([Bold("This"), PlainText(" is sooo "), Italic("pretty"), PlainText("!")])
+    assert test_text.render_html() == "<strong>This</strong> is sooo <em>pretty</em>!"
 
 
 def test_render_italic():

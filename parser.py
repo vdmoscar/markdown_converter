@@ -1,11 +1,12 @@
 from elements.heading import Heading
 from elements.image import Image
 from elements.unordered_list import UnorderedList
+from elements.code_block import CodeBlock
 from parse_context import ParseContext
 
 
 class Parser:
-    element_list = [Heading, Image, UnorderedList]
+    element_list = [Heading, Image, UnorderedList, CodeBlock]
 
     def __init__(self, lines):
         self.lines = lines

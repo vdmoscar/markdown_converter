@@ -2,11 +2,12 @@ from elements.heading import Heading
 from elements.paragraph import Paragraph
 from elements.image import Image
 from elements.unordered_list import UnorderedList
+from elements.code_block import CodeBlock
 from parser import Parser
 from parse_context import ParseContext
 from text import Text
 
-ELEMENT_LIST = [Heading, Image, UnorderedList]
+ELEMENT_LIST = [Heading, Image, UnorderedList, CodeBlock]
 
 
 def test_parseContext_identify_heading():
@@ -111,6 +112,17 @@ def test_paragraph_stops_at_empty_line():
         context = ParseContext(test, ELEMENT_LIST, 1)
         correct_ending_p = Paragraph.parse(context)
         assert correct_ending_p.text.text_items[0].content == "1\n2\n3"
+
+def test_parse_code_block():
+    with open("tests/test_code_block.md") as file:
+        test = file.readlines()
+        context = ParseContext(test, ELEMENT_LIST, 1)
+        assert context.identify_current_line() == CodeBlock
+
+        test_code_block = CodeBlock.parse(context)
+        assert test_code_block.content == "test = False\nprint(test)\n"
+        assert test_code_block.language == "python"
+
 
 
 def test_parser():

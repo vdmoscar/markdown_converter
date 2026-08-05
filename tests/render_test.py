@@ -3,6 +3,7 @@ from elements.paragraph import Paragraph
 from elements.image import Image
 from elements.unordered_list import UnorderedList
 from elements.list_item import ListItem
+from elements.code_block import CodeBlock
 from render import Renderer
 from text import Text
 from elements.inline.plain_text import PlainText
@@ -29,3 +30,11 @@ def test_render_image():
 def test_render_unordered_list():
     renderer = Renderer([UnorderedList([ListItem(Text([PlainText("test1")])), ListItem(Text([PlainText("test2")]))])])
     assert renderer.render() == "<ul>\n<li>test1</li>\n<li>test2</li>\n</ul>\n"
+
+
+def test_render_code_block():
+    renderer = Renderer([CodeBlock("print()", "python")])
+    assert renderer.render() == "<pre><code class = 'language-python'>print()</code></pre>\n"
+
+    renderer_empty_language = Renderer([CodeBlock("print()", '')])
+    assert renderer_empty_language.render() == "<pre><code>print()</code></pre>\n"

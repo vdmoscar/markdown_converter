@@ -4,21 +4,21 @@ import os
 import sys
 from converter import convert_to_html
 from gui.animation import Animation
+from gui.editor import Editor
 
 class GUI:
-    def __init__(self, root, screen_width, window_height):
+    def __init__(self, root, screen_width, screen_height, window_height):
         self.input_file_path = StringVar()
         self.output_file_path = StringVar()
         self.status = StringVar()
         self.root = root
         self.screen_width = screen_width
-
+        self.screen_height = screen_height
         self.window_height = window_height
-        self.animation_list = []
-        self.asset_path = "gui/assets/"
+        self.markdown_editor = Editor(self.root, self.screen_width // 2, self.screen_height - self.window_height, 0, 0)
 
-        # Image placeholders (for your future PNG sprites)
-        self.border_image = None
+        self.asset_path = os.path.join(os.path.dirname(__file__), "gui/assets/")
+
         self.btn_open_image = PhotoImage(file=f"{self.asset_path}OPEN_IDLE.png")
         self.btn_open_animation = Animation([PhotoImage(file=f"{self.asset_path}OPEN_HOVER_FRAME_{frame}.png") for frame in range(1,5)], time_per_frame=150)
         self.btn_save_hover_animation = Animation([PhotoImage(file=f"{self.asset_path}SAVE_HOVER_FRAME_{frame}.png") for frame in range(1,9)])
@@ -45,6 +45,13 @@ class GUI:
         if self.input_file_path.get():
             self.btn_open_image = PhotoImage(file=f"{self.asset_path}OPEN_USED.png")
             self.btn_open.config(image=self.btn_open_image)
+            if not self.markdown_editor.is_open:
+                self.markdown_editor.open()
+            try:
+                self.markdown_editor.open_file_in_editor(self.input_file_path.get())
+
+            except Exception:
+                self.status.set("failed to load file into editor")
 
     def get_output_file(self, widget=None):
         self.output_file_path.set(filedialog.asksaveasfilename(
@@ -59,14 +66,15 @@ class GUI:
             self.status.set("Please give both an input file and an output file path.")
         else:
             try:
-                with open(self.input_file_path.get(), "r") as input_file:
-                    with open(self.output_file_path.get(), "w") as output_file:
-                        output_file.write(convert_to_html(input_file.readlines()))
-                        self.status.set("conversion completed")
-                        self.btn_convert_image = PhotoImage(file=f"{self.asset_path}CONVERT_SUCCES.png")
-                        self.btn_convert.config(image=self.btn_convert_image)
-            except Exception:
+                markdown = self.markdown_editor.get_editor_content()
+                with open(self.output_file_path.get(), "w", encoding="utf-8") as output_file:
+                    output_file.write(convert_to_html(markdown))
+                    self.status.set("conversion completed")
+                    self.btn_convert_image = PhotoImage(file=f"{self.asset_path}CONVERT_SUCCES.png")
+                    self.btn_convert.config(image=self.btn_convert_image)
+            except Exception as error:
                 self.status.set("conversion failed :(")
+                print(error)
 
     def load_widgets(self):
         self.canvas = Canvas(self.root, highlightthickness=0)
@@ -93,7 +101,7 @@ class GUI:
         self.btn_convert.bind("<Button-1>", self.convert_file)
         self.btn_quit.bind("<Button-1>", self.quit_app)
 
-        # Bind hover events for the save button
+        # Bind hover events
 
         self.bind_hover_animation(self.btn_open, self.btn_open_animation, lambda: self.btn_open_image)
         self.bind_hover_animation(self.btn_save, self.btn_save_hover_animation, lambda: self.btn_save_image)
@@ -142,18 +150,19 @@ class GUI:
         button.bind("<Leave>", lambda e: animation.stop_hover(button, idle_image()))
 
 
+
 if __name__ == "__main__":
     root = Tk()
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
-    window_height = screen_height // 5 * 2
+    window_height = screen_height // 3
 
     root.geometry(f"{screen_width}x{window_height}+0+{screen_height - window_height}")
     root.wm_resizable(width=False, height=False)
     root.overrideredirect(True)
     root.wm_attributes(topmost=True)
 
-    gui = GUI(root, screen_width, window_height)
+    gui = GUI(root, screen_width, screen_height , window_height)
     gui.start()
 
     root.mainloop()

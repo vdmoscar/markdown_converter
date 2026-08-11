@@ -47,8 +47,8 @@ class GUI:
         if self.input_file_path.get():
             self.btn_open_image = PhotoImage(file=f"{self.asset_path}OPEN_USED.png")
             self.btn_open.config(image=self.btn_open_image)
-            if not self.markdown_editor.is_open:
-                self.markdown_editor.open()
+
+            self.markdown_editor.open()
             try:
                 with open(self.input_file_path.get(), "r", encoding="utf-8") as file:
                     self.markdown_editor.open_content_in_editor(file.read())
@@ -57,27 +57,32 @@ class GUI:
                 self.status.set("failed to load file into editor")
 
     def save_as_file(self, widget=None):
-        self.output_file_path.set(filedialog.asksaveasfilename(
-            initialdir=os.path.dirname(self.input_file_path.get()),
-            defaultextension=".html"))
-        if self.output_file_path.get():
-            self.btn_save_image = PhotoImage(file=f"{self.asset_path}SAVE_USED.png")
-            self.btn_save.config(image=self.btn_save_image)
+        if self.html_editor.is_open:
+            self.output_file_path.set(filedialog.asksaveasfilename(
+                initialdir=os.path.dirname(self.input_file_path.get()),
+                defaultextension=".html"))
+            if self.output_file_path.get():
+                self.btn_save_image = PhotoImage(file=f"{self.asset_path}SAVE_USED.png")
+                self.btn_save.config(image=self.btn_save_image)
+                with open(self.output_file_path.get(), "w", encoding="utf-8") as save_file:
+                    html = self.html_editor.get_editor_content()
+                    save_file.writelines(html)
+
 
     def convert_file(self, event=None):
-        if not self.output_file_path.get() or not self.input_file_path.get():
-            self.status.set("Please give both an input file and an output file path.")
+        if not self.input_file_path.get():
+            self.status.set("Please give an input file")
         else:
             try:
                 markdown = self.markdown_editor.get_editor_content()
-                with open(self.output_file_path.get(), "w", encoding="utf-8") as output_file:
-                    html = convert_to_html(markdown)
-                    output_file.write(html)
-                    self.status.set("conversion completed")
-                    self.btn_convert_image = PhotoImage(file=f"{self.asset_path}CONVERT_SUCCES.png")
-                    self.btn_convert.config(image=self.btn_convert_image)
-                    self.html_editor.open()
-                    self.html_editor.open_content_in_editor(html)
+
+                html = convert_to_html(markdown)
+
+                self.status.set("conversion completed")
+                self.btn_convert_image = PhotoImage(file=f"{self.asset_path}CONVERT_SUCCES.png")
+                self.btn_convert.config(image=self.btn_convert_image)
+                self.html_editor.open()
+                self.html_editor.open_content_in_editor(html)
             except Exception as error:
                 self.status.set("conversion failed :(")
                 print(error)

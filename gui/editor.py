@@ -11,25 +11,26 @@ class Editor:
         self.is_open = False
 
     def open(self):
-        self.editor_window = Toplevel(self.root)
+        if not self.is_open:
+            self.editor_window = Toplevel(self.root)
 
-        self.editor_window.geometry(f"{self.width}x{self.height}+{self.pos_x}+{self.pos_y}")
-        self.editor_window.overrideredirect(True)
-        self.editor_window.wm_attributes(topmost=True)
+            self.editor_window.geometry(f"{self.width}x{self.height}+{self.pos_x}+{self.pos_y}")
+            self.editor_window.overrideredirect(True)
+            self.editor_window.wm_attributes(topmost=True)
 
-        canvas = Canvas(self.editor_window, bg="#000000", highlightthickness=0)
-        canvas.pack(fill=BOTH, expand=True)
+            canvas = Canvas(self.editor_window, bg="#000000", highlightthickness=0)
+            canvas.pack(fill=BOTH, expand=True)
 
-        self.editor_text = Text(
-                    canvas,
-                    bg="#000000", fg="#FFFFFF",
-                    insertbackground="#FFFFFF",
-                    font=("Courier", 11),
-                    highlightthickness=0
-                )
+            self.editor_text = Text(
+                        canvas,
+                        bg="#000000", fg="#FFFFFF",
+                        insertbackground="#FFFFFF",
+                        font=("Courier", 11),
+                        highlightthickness=0
+                    )
 
-        self.editor_text.place(x=0, y=0, width=self.width, height=self.height)
-        self.is_open = True
+            self.editor_text.place(x=0, y=0, width=self.width, height=self.height)
+            self.is_open = True
 
     def open_content_in_editor(self, content):
         self.editor_text.delete("1.0", END)

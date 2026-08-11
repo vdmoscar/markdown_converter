@@ -31,11 +31,9 @@ class Editor:
         self.editor_text.place(x=0, y=0, width=self.width, height=self.height)
         self.is_open = True
 
-    def open_file_in_editor(self, file_path):
-        with open(file_path, "r", encoding="utf-8") as file:
-            content = file.read()
-            self.editor_text.delete("1.0", END)
-            self.editor_text.insert("1.0", content)
+    def open_content_in_editor(self, content):
+        self.editor_text.delete("1.0", END)
+        self.editor_text.insert("1.0", content)
 
     def get_editor_content(self):
         return self.editor_text.get("1.0", END).splitlines(True)

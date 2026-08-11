@@ -15,7 +15,9 @@ class GUI:
         self.screen_width = screen_width
         self.screen_height = screen_height
         self.window_height = window_height
+
         self.markdown_editor = Editor(self.root, self.screen_width // 2, self.screen_height - self.window_height, 0, 0)
+        self.html_editor = Editor(self.root, self.screen_width // 2, screen_height - window_height, self.screen_width // 2, 0)
 
         self.asset_path = os.path.join(os.path.dirname(__file__), "gui/assets/")
 
@@ -48,12 +50,13 @@ class GUI:
             if not self.markdown_editor.is_open:
                 self.markdown_editor.open()
             try:
-                self.markdown_editor.open_file_in_editor(self.input_file_path.get())
+                with open(self.input_file_path.get(), "r", encoding="utf-8") as file:
+                    self.markdown_editor.open_content_in_editor(file.read())
 
             except Exception:
                 self.status.set("failed to load file into editor")
 
-    def get_output_file(self, widget=None):
+    def save_as_file(self, widget=None):
         self.output_file_path.set(filedialog.asksaveasfilename(
             initialdir=os.path.dirname(self.input_file_path.get()),
             defaultextension=".html"))
@@ -68,10 +71,13 @@ class GUI:
             try:
                 markdown = self.markdown_editor.get_editor_content()
                 with open(self.output_file_path.get(), "w", encoding="utf-8") as output_file:
-                    output_file.write(convert_to_html(markdown))
+                    html = convert_to_html(markdown)
+                    output_file.write(html)
                     self.status.set("conversion completed")
                     self.btn_convert_image = PhotoImage(file=f"{self.asset_path}CONVERT_SUCCES.png")
                     self.btn_convert.config(image=self.btn_convert_image)
+                    self.html_editor.open()
+                    self.html_editor.open_content_in_editor(html)
             except Exception as error:
                 self.status.set("conversion failed :(")
                 print(error)
@@ -97,7 +103,7 @@ class GUI:
 
         # Bind click events
         self.btn_open.bind("<Button-1>", self.get_input_file)
-        self.btn_save.bind("<Button-1>", self.get_output_file)
+        self.btn_save.bind("<Button-1>", self.save_as_file)
         self.btn_convert.bind("<Button-1>", self.convert_file)
         self.btn_quit.bind("<Button-1>", self.quit_app)
 
@@ -117,8 +123,8 @@ class GUI:
         # This ensures they scale gracefully whether on a laptop or an ultra-wide monitor or at least i hope it does.
 
         col_1_width = self.get_dynamic_width(2)
-        col_2_width = self.get_dynamic_width(20)
-        col_3_width = self.get_dynamic_width(40)
+        col_2_width = self.get_dynamic_width(25)
+        col_3_width = self.get_dynamic_width(60)
         row_1_height = self.get_dynamic_height(10)
         row_btn_height = self.get_dynamic_height(65)
         row_3_height = self.get_dynamic_height(65)
@@ -126,13 +132,13 @@ class GUI:
         self.btn_open.place(x=col_1_width, y=row_btn_height)
         self.lbl_input.place(x=col_2_width, y=row_1_height)
 
-        self.btn_save.place(x=col_2_width, y=row_btn_height)
+        self.btn_convert.place(x=col_2_width, y=row_btn_height)
         self.lbl_output.place(x=col_2_width, y=self.get_dynamic_height(40))
 
-        self.btn_convert.place(x=col_3_width, y=row_btn_height)
+        self.btn_save.place(x=col_3_width, y=row_btn_height)
         self.lbl_status.place(x=col_2_width, y=row_3_height)
 
-        self.btn_quit.place(x=self.get_dynamic_width(70), y=row_3_height)
+        self.btn_quit.place(x=self.get_dynamic_width(80), y=row_3_height)
 
 
     def get_dynamic_height(self, percentage: int):

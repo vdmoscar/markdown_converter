@@ -24,12 +24,11 @@ class GUI:
         self.btn_open_image = PhotoImage(file=f"{self.asset_path}OPEN_IDLE.png")
         self.btn_open_animation = Animation([PhotoImage(file=f"{self.asset_path}OPEN_HOVER_FRAME_{frame}.png") for frame in range(1,5)], time_per_frame=150)
         self.btn_save_hover_animation = Animation([PhotoImage(file=f"{self.asset_path}SAVE_HOVER_FRAME_{frame}.png") for frame in range(1,9)])
-        self.btn_save_image = PhotoImage(file=f"{self.asset_path}SAVE_IDLE.png")
-        self.btn_convert_image = PhotoImage(file=f"{self.asset_path}CONVERT_IDLE.png")
+        self.btn_save_image = PhotoImage(file=f"{self.asset_path}SAVE_NOT_AVAILABLE.png")
+        self.btn_convert_image = PhotoImage(file=f"{self.asset_path}CONVERT_NOT_AVAILABLE.png")
         self.btn_convert_hover_animation = Animation([PhotoImage(file=f"{self.asset_path}CONVERT_HOVER_FRAME_{frame}.png") for frame in range(1,17)])
         self.btn_quit_image = PhotoImage(file=f"{self.asset_path}QUIT_IDLE.png")
         self.btn_quit_hover_animation = Animation([PhotoImage(file=f"{self.asset_path}QUIT_HOVER_FRAME_{frame}.png") for frame in range(1,5)])
-
 
     def start(self):
         self.load_widgets()
@@ -52,6 +51,8 @@ class GUI:
             try:
                 with open(self.input_file_path.get(), "r", encoding="utf-8") as file:
                     self.markdown_editor.open_content_in_editor(file.read())
+
+                self.make_convert_available()
 
             except Exception:
                 self.status.set("failed to load file into editor")
@@ -83,6 +84,7 @@ class GUI:
                 self.btn_convert.config(image=self.btn_convert_image)
                 self.html_editor.open()
                 self.html_editor.open_content_in_editor(html)
+                self.make_save_available()
             except Exception as error:
                 self.status.set("conversion failed :(")
                 print(error)
@@ -115,8 +117,6 @@ class GUI:
         # Bind hover events
 
         self.bind_hover_animation(self.btn_open, self.btn_open_animation, lambda: self.btn_open_image)
-        self.bind_hover_animation(self.btn_save, self.btn_save_hover_animation, lambda: self.btn_save_image)
-        self.bind_hover_animation(self.btn_convert, self.btn_convert_hover_animation, lambda: self.btn_convert_image)
         self.bind_hover_animation(self.btn_quit, self.btn_quit_hover_animation, lambda: self.btn_quit_image)
 
     def layout_widgets(self):
@@ -127,8 +127,8 @@ class GUI:
         # Placing widgets using coordinates calculated dynamically from screen size.
         # This ensures they scale gracefully whether on a laptop or an ultra-wide monitor or at least i hope it does.
 
-        col_1_width = self.get_dynamic_width(2)
-        col_2_width = self.get_dynamic_width(25)
+        col_1_width = self.get_dynamic_width(5)
+        col_2_width = self.get_dynamic_width(28)
         col_3_width = self.get_dynamic_width(60)
         row_1_height = self.get_dynamic_height(10)
         row_btn_height = self.get_dynamic_height(65)
@@ -152,7 +152,6 @@ class GUI:
     def get_dynamic_width(self, percentage: int):
         return round(self.screen_width / 100 * percentage)
 
-
     def style_widgets(self):
         self.canvas.configure(background="#000000")
 
@@ -160,7 +159,15 @@ class GUI:
         button.bind("<Enter>", lambda e: animation.start_hover(button, self.root))
         button.bind("<Leave>", lambda e: animation.stop_hover(button, idle_image()))
 
+    def make_convert_available(self):
+        self.btn_convert_image = PhotoImage(file=f"{self.asset_path}CONVERT_IDLE.png")
+        self.btn_convert.config(image=self.btn_convert_image)
+        self.bind_hover_animation(self.btn_convert, self.btn_convert_hover_animation, lambda: self.btn_convert_image)
 
+    def make_save_available(self):
+        self.btn_save_image = PhotoImage(file=f"{self.asset_path}SAVE_IDLE.png")
+        self.btn_save.config(image=self.btn_save_image)
+        self.bind_hover_animation(self.btn_save, self.btn_save_hover_animation, lambda: self.btn_save_image)
 
 if __name__ == "__main__":
     root = Tk()
@@ -172,6 +179,7 @@ if __name__ == "__main__":
     root.wm_resizable(width=False, height=False)
     root.overrideredirect(True)
     root.wm_attributes(topmost=True)
+    root.iconbitmap(os.path.join(os.path.dirname(__file__), "gui/assets/HTMD_LOGO1.ico"))
 
     gui = GUI(root, screen_width, screen_height , window_height)
     gui.start()

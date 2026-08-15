@@ -16,19 +16,18 @@ class GUI:
         self.screen_height = screen_height
         self.window_height = window_height
 
+        self.asset_path = os.path.join(os.path.dirname(__file__), "gui/assets/")
+
+        self.SCALE_RATIO = 48
+        self.scale = max(1, self.window_height // self.SCALE_RATIO)
+
         self.markdown_editor = Editor(self.root, self.screen_width // 2, self.screen_height - self.window_height, 0, 0)
         self.html_editor = Editor(self.root, self.screen_width // 2, screen_height - window_height, self.screen_width // 2, 0)
 
-        self.asset_path = os.path.join(os.path.dirname(__file__), "gui/assets/")
 
-        self.btn_open_image = PhotoImage(file=f"{self.asset_path}OPEN_IDLE.png")
-        self.btn_open_animation = Animation([PhotoImage(file=f"{self.asset_path}OPEN_HOVER_FRAME_{frame}.png") for frame in range(1,5)], time_per_frame=150)
-        self.btn_save_hover_animation = Animation([PhotoImage(file=f"{self.asset_path}SAVE_HOVER_FRAME_{frame}.png") for frame in range(1,9)])
-        self.btn_save_image = PhotoImage(file=f"{self.asset_path}SAVE_NOT_AVAILABLE.png")
-        self.btn_convert_image = PhotoImage(file=f"{self.asset_path}CONVERT_NOT_AVAILABLE.png")
-        self.btn_convert_hover_animation = Animation([PhotoImage(file=f"{self.asset_path}CONVERT_HOVER_FRAME_{frame}.png") for frame in range(1,17)])
-        self.btn_quit_image = PhotoImage(file=f"{self.asset_path}QUIT_IDLE.png")
-        self.btn_quit_hover_animation = Animation([PhotoImage(file=f"{self.asset_path}QUIT_HOVER_FRAME_{frame}.png") for frame in range(1,5)])
+
+        self.load_images()
+
 
     def start(self):
         self.load_widgets()
@@ -44,7 +43,7 @@ class GUI:
                 initialdir = os.getcwd(),
                 filetypes = [("markdown", "*.md"), ("all file types", "*.*")]))
         if self.input_file_path.get():
-            self.btn_open_image = PhotoImage(file=f"{self.asset_path}OPEN_USED.png")
+            self.btn_open_image = self.load_image("OPEN_USED.png")
             self.btn_open.config(image=self.btn_open_image)
 
             self.markdown_editor.open()
@@ -63,7 +62,7 @@ class GUI:
                 initialdir=os.path.dirname(self.input_file_path.get()),
                 defaultextension=".html"))
             if self.output_file_path.get():
-                self.btn_save_image = PhotoImage(file=f"{self.asset_path}SAVE_USED.png")
+                self.btn_save_image = self.load_image("SAVE_USED.png")
                 self.btn_save.config(image=self.btn_save_image)
                 with open(self.output_file_path.get(), "w", encoding="utf-8") as save_file:
                     html = self.html_editor.get_editor_content()
@@ -80,7 +79,7 @@ class GUI:
                 html = convert_to_html(markdown)
 
                 self.status.set("conversion completed")
-                self.btn_convert_image = PhotoImage(file=f"{self.asset_path}CONVERT_SUCCES.png")
+                self.btn_convert_image = self.load_image("CONVERT_SUCCES.png")
                 self.btn_convert.config(image=self.btn_convert_image)
                 self.html_editor.open()
                 self.html_editor.open_content_in_editor(html)
@@ -145,6 +144,21 @@ class GUI:
 
         self.btn_quit.place(x=self.get_dynamic_width(80), y=row_3_height)
 
+    def load_image(self, filename):
+        file_path = os.path.join(self.asset_path, filename)
+        return PhotoImage(file=file_path).zoom(self.scale)
+
+    def load_images(self):
+        self.btn_open_image = self.load_image("OPEN_IDLE.png")
+        self.btn_open_animation = Animation([self.load_image(f"OPEN_HOVER_FRAME_{frame}.png") for frame in range(1,5)], time_per_frame=150)
+        self.btn_save_hover_animation = Animation([self.load_image(f"SAVE_HOVER_FRAME_{frame}.png") for frame in range(1,9)])
+        self.btn_save_image = self.load_image("SAVE_NOT_AVAILABLE.png")
+        self.btn_convert_image = self.load_image("CONVERT_NOT_AVAILABLE.png")
+        self.btn_convert_hover_animation = Animation([self.load_image(f"CONVERT_HOVER_FRAME_{frame}.png") for frame in range(1,17)])
+        self.btn_quit_image = self.load_image("QUIT_IDLE.png")
+        self.btn_quit_hover_animation = Animation([self.load_image(f"QUIT_HOVER_FRAME_{frame}.png") for frame in range(1,5)])
+
+
 
     def get_dynamic_height(self, percentage: int):
         return round(self.window_height / 100 * percentage)
@@ -160,12 +174,12 @@ class GUI:
         button.bind("<Leave>", lambda e: animation.stop_hover(button, idle_image()))
 
     def make_convert_available(self):
-        self.btn_convert_image = PhotoImage(file=f"{self.asset_path}CONVERT_IDLE.png")
+        self.btn_convert_image = self.load_image("CONVERT_IDLE.png")
         self.btn_convert.config(image=self.btn_convert_image)
         self.bind_hover_animation(self.btn_convert, self.btn_convert_hover_animation, lambda: self.btn_convert_image)
 
     def make_save_available(self):
-        self.btn_save_image = PhotoImage(file=f"{self.asset_path}SAVE_IDLE.png")
+        self.btn_save_image = self.load_image("SAVE_IDLE.png")
         self.btn_save.config(image=self.btn_save_image)
         self.bind_hover_animation(self.btn_save, self.btn_save_hover_animation, lambda: self.btn_save_image)
 
@@ -180,7 +194,6 @@ if __name__ == "__main__":
     root.overrideredirect(True)
     root.wm_attributes(topmost=True)
     root.iconbitmap(os.path.join(os.path.dirname(__file__), "gui/assets/HTMD_LOGO1.ico"))
-
     gui = GUI(root, screen_width, screen_height , window_height)
     gui.start()
 
